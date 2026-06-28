@@ -18,6 +18,7 @@ import TechStack from './components/TechStack';
 import Partners from './components/Partners';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import AnimatedBackground from './components/AnimatedBackground';
 import { Language } from './translations';
 
 export default function App() {
@@ -55,7 +56,10 @@ export default function App() {
   };
 
   return (
-    <div id="team404-app-root" className="min-h-screen bg-page text-gray-100 selection:bg-purple-500 selection:text-white overflow-x-hidden">
+    <div id="team404-app-root" className="relative min-h-screen bg-page text-gray-100 selection:bg-purple-500 selection:text-white overflow-x-hidden">
+      <AnimatedBackground />
+
+      <div className="relative z-10">
       <Navbar
         onNavigate={handleNavigate}
         activeSection={activeSection}
@@ -79,6 +83,7 @@ export default function App() {
       </main>
 
       <Footer onNavigate={handleNavigate} lang={lang} />
+      </div>
     </div>
   );
 }

@@ -8,8 +8,7 @@ interface HeroProps {
   lang: Language;
 }
 
-const HERO_BG =
-  'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1920&q=80';
+const HERO_BG = '/backgrounds/neural-network.png';
 
 export default function Hero({ onNavigate, lang }: HeroProps) {
   const t = translations[lang] || translations.uz;
@@ -36,9 +35,9 @@ export default function Hero({ onNavigate, lang }: HeroProps) {
   return (
     <section id="home" className="relative min-h-[92vh] flex items-center overflow-hidden">
       <div className="absolute inset-0">
-        <img src={HERO_BG} alt="" className="w-full h-full object-cover scale-105" referrerPolicy="no-referrer" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050510] via-[#050510]/92 to-[#050510]/75" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-transparent to-[#050510]/40" />
+        <img src={HERO_BG} alt="" className="w-full h-full object-cover object-center scale-105 opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050510] via-[#050510]/95 to-[#050510]/85" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-transparent to-[#050510]/50" />
       </div>
 
       <div className="hero-glow top-20 right-1/4 w-[500px] h-[350px] bg-purple-600/25" />
