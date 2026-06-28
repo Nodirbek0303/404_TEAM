@@ -56,7 +56,7 @@ export default function App() {
   };
 
   return (
-    <div id="team404-app-root" className="relative min-h-screen bg-page text-gray-100 selection:bg-purple-500 selection:text-white overflow-x-hidden">
+    <div id="team404-app-root" className="relative min-h-screen text-gray-100 selection:bg-purple-500 selection:text-white overflow-x-hidden">
       <AnimatedBackground />
 
       <div className="relative z-10">

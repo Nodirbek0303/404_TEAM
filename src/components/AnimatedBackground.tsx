@@ -3,29 +3,23 @@ import React from 'react';
 const FLOATS = [
   {
     src: '/backgrounds/sphere-gold.png',
-    alt: '',
-    className: 'bg-float-1 top-[8%] -right-[5%] w-[min(420px,55vw)] opacity-[0.22]',
+    className: 'top-[5%] right-[0%] w-[min(480px,58vw)]',
     anim: 'bg-drift-slow',
   },
   {
     src: '/backgrounds/quantum-lab.png',
-    alt: '',
-    className: 'bg-float-2 top-[35%] -left-[8%] w-[min(380px,50vw)] opacity-[0.18]',
+    className: 'top-[30%] -left-[4%] w-[min(440px,52vw)]',
     anim: 'bg-drift-reverse',
   },
   {
     src: '/backgrounds/neural-network.png',
-    alt: '',
-    className: 'bg-float-3 bottom-[15%] right-[5%] w-[min(360px,48vw)] opacity-[0.2]',
-    anim: 'bg-drift-slow',
-    delay: 'animation-delay-4s',
+    className: 'bottom-[10%] right-[2%] w-[min(420px,50vw)]',
+    anim: 'bg-drift-slow animation-delay-4s',
   },
   {
     src: '/backgrounds/drone-tech.png',
-    alt: '',
-    className: 'bg-float-4 top-[55%] left-[40%] w-[min(280px,38vw)] opacity-[0.15]',
-    anim: 'bg-drift-reverse',
-    delay: 'animation-delay-2s',
+    className: 'top-[50%] left-[35%] w-[min(320px,42vw)]',
+    anim: 'bg-drift-reverse animation-delay-2s',
   },
 ];
 
@@ -35,31 +29,44 @@ export default function AnimatedBackground() {
       className="fixed inset-0 z-0 overflow-hidden pointer-events-none select-none"
       aria-hidden
     >
-      {/* Grid + scan line */}
-      <div className="absolute inset-0 bg-grid-tech opacity-40" />
-      <div className="absolute inset-0 bg-scan-line" />
+      {/* Asosiy fon — neural network butun ekran */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.35]"
+        style={{ backgroundImage: "url('/backgrounds/neural-network.png')" }}
+      />
 
-      {/* Floating orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-600/10 blur-[100px] bg-pulse-orb" />
-      <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-blue-600/8 blur-[120px] bg-pulse-orb-delayed" />
-      <div className="absolute top-2/3 left-1/2 w-48 h-48 rounded-full bg-amber-500/5 blur-[80px] bg-pulse-orb" />
+      {/* Ikkinchi qatlam — oltin globus markazda */}
+      <div
+        className="absolute inset-0 bg-cover bg-right-top bg-no-repeat opacity-[0.28]"
+        style={{ backgroundImage: "url('/backgrounds/sphere-gold.png')" }}
+      />
 
-      {/* Code rain particles */}
-      <div className="absolute inset-0 bg-particles" />
+      {/* Grid + scan */}
+      <div className="absolute inset-0 bg-grid-tech opacity-70" />
+      <div className="absolute inset-0 bg-scan-line opacity-80" />
 
-      {/* Floating tech images */}
+      {/* Yorug' orbalar */}
+      <div className="absolute top-[15%] left-[20%] w-72 h-72 rounded-full bg-purple-600/25 blur-[90px] bg-pulse-orb" />
+      <div className="absolute bottom-[20%] right-[15%] w-96 h-96 rounded-full bg-blue-500/20 blur-[110px] bg-pulse-orb-delayed" />
+      <div className="absolute top-[60%] left-[55%] w-56 h-56 rounded-full bg-amber-400/15 blur-[70px] bg-pulse-orb" />
+
+      <div className="absolute inset-0 bg-particles opacity-90" />
+
+      {/* Suzuvchi rasmlar */}
       {FLOATS.map((item, i) => (
         <img
           key={i}
           src={item.src}
-          alt={item.alt}
-          className={`absolute object-contain rounded-2xl mix-blend-screen filter blur-[0.5px] ${item.className} ${item.anim} ${item.delay ?? ''}`}
+          alt=""
+          className={`absolute object-contain rounded-xl opacity-55 shadow-[0_0_60px_rgba(124,58,237,0.25)] ${item.className} ${item.anim}`}
           loading="lazy"
         />
       ))}
 
-      {/* Vignette — content readable */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050510]/40 via-[#050510]/70 to-[#050510]" />
+      {/* Faqat chetlarda qoraytirish — markaz ochiq qoladi */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(5,5,16,0.45)_55%,rgba(5,5,16,0.85)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#050510] to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#050510]/80 to-transparent" />
     </div>
   );
 }

@@ -144,10 +144,10 @@ html {
 /* —— Animated site background —— */
 .bg-grid-tech {
   background-image:
-    linear-gradient(rgba(139, 92, 246, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 92, 246, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  animation: gridShift 24s linear infinite;
+    linear-gradient(rgba(139, 92, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridShift 20s linear infinite;
 }
 
 @keyframes gridShift {
@@ -159,11 +159,11 @@ html {
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(59, 130, 246, 0.03) 50%,
+    rgba(59, 130, 246, 0.08) 50%,
     transparent 100%
   );
-  background-size: 100% 200%;
-  animation: scanLine 8s ease-in-out infinite;
+  background-size: 100% 180%;
+  animation: scanLine 6s ease-in-out infinite;
 }
 
 @keyframes scanLine {
