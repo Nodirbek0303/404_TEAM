@@ -28,6 +28,8 @@ function modalLabels(lang: Language) {
       overall: 'Overall score',
       since: 'Internship since',
       close: 'Close',
+      noProjects: 'Not yet assigned to any projects',
+      noGrades: 'No curator grades yet',
     };
   }
   if (lang === 'ru') {
@@ -40,6 +42,8 @@ function modalLabels(lang: Language) {
       overall: 'Общий балл',
       since: 'Практика с',
       close: 'Закрыть',
+      noProjects: 'Пока не участвует в проектах',
+      noGrades: 'Оценки куратора ещё не выставлены',
     };
   }
   return {
@@ -48,10 +52,12 @@ function modalLabels(lang: Language) {
     completed: 'Ishlagan loyihalar',
     grades: 'Kurator ballari',
     comment: 'Kurator izohi',
-    overall: 'Umumiy ball',
-    since: 'Amaliyot boshlangan',
-    close: 'Yopish',
-  };
+      overall: 'Umumiy ball',
+      since: 'Amaliyot boshlangan',
+      close: 'Yopish',
+      noProjects: 'Hali loyihalarda ishtirok etilmagan',
+      noGrades: 'Kurator ballari hali qo\'yilmagan',
+    };
 }
 
 export default function Interns({ lang }: InternsProps) {
@@ -180,8 +186,8 @@ function InternCard({
             {intern.direction}
           </span>
           {intern.overallGrade != null && (
-            <p className="mt-2 text-xs font-bold text-amber-400 flex items-center justify-center gap-1">
-              <Star className="w-3.5 h-3.5 fill-amber-400" />
+            <p className={`mt-2 text-xs font-bold flex items-center justify-center gap-1 ${intern.overallGrade > 0 ? 'text-amber-400' : 'text-gray-500'}`}>
+              <Star className={`w-3.5 h-3.5 ${intern.overallGrade > 0 ? 'fill-amber-400 text-amber-400' : 'text-gray-500'}`} />
               {intern.overallGrade}/100
             </p>
           )}
@@ -261,9 +267,13 @@ function InternModal({
               </p>
             )}
             {intern.overallGrade != null && (
-              <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30">
-                <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                <span className="text-sm font-black text-amber-300">
+              <div className={`mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border ${
+                intern.overallGrade > 0
+                  ? 'bg-amber-500/10 border-amber-500/30'
+                  : 'bg-gray-500/10 border-gray-500/30'
+              }`}>
+                <Star className={`w-4 h-4 ${intern.overallGrade > 0 ? 'text-amber-400 fill-amber-400' : 'text-gray-500'}`} />
+                <span className={`text-sm font-black ${intern.overallGrade > 0 ? 'text-amber-300' : 'text-gray-400'}`}>
                   {labels.overall}: {intern.overallGrade}/100
                 </span>
               </div>
@@ -294,7 +304,7 @@ function InternModal({
           </div>
         </div>
 
-        {intern.activeProjects.length > 0 && (
+        {intern.activeProjects.length > 0 ? (
           <div className="space-y-3">
             <h4 className="text-[10px] font-mono font-bold text-purple-400 uppercase tracking-widest flex items-center gap-2">
               <FolderKanban className="w-3.5 h-3.5" />
@@ -312,6 +322,10 @@ function InternModal({
               ))}
             </ul>
           </div>
+        ) : (
+          <p className="text-xs text-gray-500 italic py-2 px-3 rounded-lg bg-black/20 border border-white/5">
+            {labels.noProjects}
+          </p>
         )}
 
         {intern.completedProjects.length > 0 && (
@@ -336,7 +350,7 @@ function InternModal({
           </div>
         )}
 
-        {intern.curatorGrades.length > 0 && (
+        {intern.curatorGrades.length > 0 ? (
           <div className="space-y-3">
             <h4 className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">
               {labels.grades}
@@ -360,6 +374,10 @@ function InternModal({
               ))}
             </div>
           </div>
+        ) : (
+          <p className="text-xs text-gray-500 italic py-2 px-3 rounded-lg bg-black/20 border border-white/5">
+            {labels.noGrades}
+          </p>
         )}
 
         {intern.curatorComment && (
