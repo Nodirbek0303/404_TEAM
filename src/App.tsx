@@ -10,6 +10,7 @@ import StatsBar from './components/StatsBar';
 import ServicesGrid from './components/ServicesGrid';
 import Projects from './components/Projects';
 import Team from './components/Team';
+import Interns from './components/Interns';
 import Workflow from './components/Workflow';
 import WhyUs from './components/WhyUs';
 import Testimonials from './components/Testimonials';
@@ -24,7 +25,7 @@ export default function App() {
   const [lang, setLang] = useState<Language>('uz');
 
   useEffect(() => {
-    const sections = ['home', 'services', 'projects', 'team', 'contact'];
+    const sections = ['home', 'services', 'projects', 'team', 'interns', 'contact'];
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -67,6 +68,7 @@ export default function App() {
         <StatsBar lang={lang} />
         <ServicesGrid onNavigate={handleNavigate} lang={lang} />
         <Team lang={lang} />
+        <Interns lang={lang} />
         <Projects lang={lang} />
         <Workflow lang={lang} />
         <WhyUs lang={lang} />

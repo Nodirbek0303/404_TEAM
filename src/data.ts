@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Service, TeamMember, Project } from './types';
+import { Service, TeamMember, Project, Intern } from './types';
 
 export const servicesData: Service[] = [
   {
@@ -232,6 +232,38 @@ export const teamGroups: TeamGroup[] = [
     labelEn: 'Specialists',
     labelRu: 'Специалисты',
     memberIds: ['aynur', 'behruz', 'jamshed'],
+  },
+];
+
+/**
+ * Amaliyotchilar — ma'lumot qo'shish:
+ * 1. Rasmlar: public/interns/{id}-card.png va public/interns/{id}-curator.png
+ * 2. Quyidagi massivga yangi obyekt qo'shing
+ *
+ * @example
+ * {
+ *   id: 'ali-valiyev',
+ *   name: 'Valiyev Ali',
+ *   direction: 'Frontend dasturlash',
+ *   avatar: '/interns/ali-valiyev-card.png',
+ *   curator: {
+ *     name: 'Behruz Muhiddinov',
+ *     avatar: '/interns/ali-valiyev-curator.png',
+ *     role: 'Frontend mutaxassisi',
+ *   },
+ * },
+ */
+export const internsData: Intern[] = [
+  {
+    id: 'zafarjon',
+    name: 'Zoidov Zafarjon',
+    direction: 'Kiberxavfsizlik',
+    avatar: '/interns/zafarjon-card.png',
+    curator: {
+      name: 'Anarboyev Dilshod',
+      avatar: '/team/dilshod-card.png',
+      role: 'Kiberxavfsizlik bo\'limi Boshlig\'i',
+    },
   },
 ];
 

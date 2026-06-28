@@ -39,6 +39,7 @@ export default function Navbar({ onNavigate, activeSection, lang, onLangChange }
     { id: 'services', label: t.navServices },
     { id: 'projects', label: t.navProjects },
     { id: 'team', label: t.navTeam },
+    { id: 'interns', label: t.navInterns },
     { id: 'blog', label: lang === 'uz' ? 'Blog' : lang === 'en' ? 'Blog' : 'Блог', external: 'https://t.me/uz_team_404' },
     { id: 'contact', label: t.navContact },
   ];

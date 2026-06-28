@@ -27,6 +27,20 @@ export interface TeamMember {
   };
 }
 
+/** 404-TEAM amaliyotchisi */
+export interface Intern {
+  id: string;
+  name: string;
+  /** Amaliyot yo'nalishi (masalan: Frontend dasturlash) */
+  direction: string;
+  avatar: string;
+  curator: {
+    name: string;
+    avatar: string;
+    role?: string;
+  };
+}
+
 export interface Project {
   id: string;
   title: string;
