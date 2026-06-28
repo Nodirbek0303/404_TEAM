@@ -246,11 +246,14 @@ export const teamGroups: TeamGroup[] = [
  *   name: 'Valiyev Ali',
  *   direction: 'Frontend dasturlash',
  *   avatar: '/interns/ali-valiyev-card.png',
- *   curator: {
- *     name: 'Behruz Muhiddinov',
- *     avatar: '/interns/ali-valiyev-curator.png',
- *     role: 'Frontend mutaxassisi',
- *   },
+ *   bio: '...',
+ *   startedAt: '2025-yil mart',
+ *   curator: { name: '...', avatar: '/interns/ali-curator.png', role: '...' },
+ *   activeProjects: [{ title: 'Loyiha nomi', role: 'Vazifasi' }],
+ *   completedProjects: [{ title: 'Loyiha', period: '2025 Q1' }],
+ *   curatorGrades: [{ category: 'React', score: 90 }],
+ *   curatorComment: '...',
+ *   overallGrade: 88,
  * },
  */
 export const internsData: Intern[] = [
@@ -259,11 +262,37 @@ export const internsData: Intern[] = [
     name: 'Zoidov Zafarjon',
     direction: 'Kiberxavfsizlik',
     avatar: '/interns/zafarjon-card.png',
+    bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida amaliyot o\'tmoqda. Tarmoq himoyasi, penetratsiya testlari va xavfsiz kod auditlari ustida ishlaydi.',
+    startedAt: '2025-yil yanvar',
     curator: {
       name: 'Anarboyev Dilshod',
       avatar: '/team/dilshod-card.png',
       role: 'Kiberxavfsizlik bo\'limi Boshlig\'i',
     },
+    activeProjects: [
+      {
+        title: '404 SMART CITY — Xavfsizlik audit',
+        role: 'Tarmoq skanerlash, zaiflik tahlili va himoya tavsiyalari',
+      },
+      {
+        title: 'AquaGuard IoT — Protokol xavfsizligi',
+        role: 'Sensor va MQTT aloqa shifrlash tekshiruvi',
+      },
+    ],
+    completedProjects: [
+      { title: 'CYBERAQUA — Server hardening', period: '2025 Q1' },
+      { title: 'Kompaniya ichki VPN va firewall sozlash', period: '2025 Q2' },
+      { title: 'Phishing simulyatsiya va xodimlar treningi', period: '2025 Q2' },
+    ],
+    curatorGrades: [
+      { category: 'Penetratsiya testlari', score: 88 },
+      { category: 'Secure Code Review', score: 85 },
+      { category: 'Tarmoq xavfsizligi', score: 90 },
+      { category: 'Hisobot va hujjatlashtirish', score: 82 },
+    ],
+    curatorComment:
+      'Jiddiy va mas\'uliyatli amaliyotchi. Kiberxavfsizlik vazifalarini mustaqil bajaradi, jamoa bilan yaxshi hamkorlik qiladi.',
+    overallGrade: 86,
   },
 ];
 

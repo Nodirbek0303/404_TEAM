@@ -31,14 +31,23 @@ export interface TeamMember {
 export interface Intern {
   id: string;
   name: string;
-  /** Amaliyot yo'nalishi (masalan: Frontend dasturlash) */
   direction: string;
   avatar: string;
+  bio?: string;
+  startedAt?: string;
   curator: {
     name: string;
     avatar: string;
     role?: string;
   };
+  /** Hozir ishlayotgan loyihalar */
+  activeProjects: { title: string; role?: string }[];
+  /** Tugatilgan / ishlagan loyihalar */
+  completedProjects: { title: string; period?: string }[];
+  /** Kurator qo'ygan ballar (0–100) */
+  curatorGrades: { category: string; score: number }[];
+  curatorComment?: string;
+  overallGrade?: number;
 }
 
 export interface Project {
