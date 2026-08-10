@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GraduationCap, UserCheck, FolderKanban, CheckCircle2, Star, Calendar } from 'lucide-react';
+import { GraduationCap, UserCheck, FolderKanban, CheckCircle2, Star, Calendar, Loader } from 'lucide-react';
 import { internsData } from '../data';
 import { Intern } from '../types';
 import { Language, translations } from '../translations';
@@ -25,6 +25,12 @@ function modalLabels(lang: Language) {
       noProjects: 'Hali loyihalarda ishtirok etilmagan',
       noGrades: "Kurator ballari hali qo'yilmagan",
       all: 'Barchasi',
+      ball: 'ball',
+      pending: 'kutilmoqda',
+      inProgress: 'Davom etmoqda',
+      collected: "To'plangan",
+      expected: 'Kutilayotgan',
+      total: 'Jami',
     },
     en: {
       detail: 'View profile',
@@ -38,6 +44,12 @@ function modalLabels(lang: Language) {
       noProjects: 'Not yet assigned to any projects',
       noGrades: 'No curator grades yet',
       all: 'All',
+      ball: 'pts',
+      pending: 'pending',
+      inProgress: 'In progress',
+      collected: 'Earned',
+      expected: 'Expected',
+      total: 'Total',
     },
     ru: {
       detail: 'Подробнее',
@@ -51,6 +63,12 @@ function modalLabels(lang: Language) {
       noProjects: 'Пока не участвует в проектах',
       noGrades: 'Оценки куратора ещё не выставлены',
       all: 'Все',
+      ball: 'балл',
+      pending: 'ожидается',
+      inProgress: 'В работе',
+      collected: 'Набрано',
+      expected: 'Ожидается',
+      total: 'Всего',
     },
   };
   return dict[key];
@@ -121,6 +139,7 @@ export default function Interns({ lang }: InternsProps) {
                 index={index}
                 t={t}
                 detailLabel={labels.detail}
+                pendingLabel={labels.pending}
                 onOpen={() => setActiveIntern(intern)}
               />
             ))}
@@ -147,12 +166,14 @@ function InternCard({
   index,
   t,
   detailLabel,
+  pendingLabel,
   onOpen,
 }: {
   intern: Intern;
   index: number;
   t: (typeof translations)['uz'];
   detailLabel: string;
+  pendingLabel: string;
   onOpen: () => void;
 }) {
   const hasGrade = intern.overallGrade != null && intern.overallGrade > 0;
@@ -198,14 +219,21 @@ function InternCard({
           </span>
 
           {intern.overallGrade != null && (
-            <p
-              className={`mt-2.5 font-mono text-[0.7rem] font-bold flex items-center justify-center gap-1.5 ${
-                hasGrade ? 'text-amber-400' : 'text-gray-600'
-              }`}
-            >
-              <Star className={`w-3.5 h-3.5 ${hasGrade ? 'fill-amber-400' : ''}`} />
-              {intern.overallGrade}/100
-            </p>
+            <div className="mt-2.5 space-y-1">
+              <p
+                className={`font-mono text-[0.7rem] font-bold flex items-center justify-center gap-1.5 ${
+                  hasGrade ? 'text-amber-400' : 'text-gray-600'
+                }`}
+              >
+                <Star className={`w-3.5 h-3.5 ${hasGrade ? 'fill-amber-400' : ''}`} />
+                {intern.overallGrade}/100
+              </p>
+              {intern.expectedGrade ? (
+                <p className="font-mono text-[0.58rem] text-gray-600">
+                  <span className="text-amber-400/70">+{intern.expectedGrade}</span> {pendingLabel}
+                </p>
+              ) : null}
+            </div>
           )}
         </div>
       </div>
@@ -323,9 +351,23 @@ function InternModal({
           </p>
           <ul className="space-y-2">
             {intern.activeProjects.map((p) => (
-              <li key={p.title} className="p-3 rounded-lg bg-purple-500/[0.06] border border-purple-500/20">
-                <p className="text-[0.8rem] font-semibold text-white">{p.title}</p>
-                {p.role && <p className="font-mono text-[0.65rem] text-gray-500 mt-1">{p.role}</p>}
+              <li
+                key={p.title}
+                className="p-3.5 rounded-lg bg-purple-500/[0.06] border border-purple-500/20 border-l-2 border-l-amber-500/60"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-[0.8rem] font-semibold text-white">{p.title}</p>
+                  <span className="shrink-0 font-mono text-[0.55rem] px-1.5 py-0.5 rounded border border-amber-500/30 bg-amber-500/10 text-amber-300 flex items-center gap-1">
+                    <Loader className="w-2.5 h-2.5" />
+                    {labels.inProgress}
+                  </span>
+                </div>
+                {p.role && <p className="font-mono text-[0.65rem] text-purple-300/80 mt-1.5">{p.role}</p>}
+                {p.note && (
+                  <p className="text-[0.72rem] text-gray-400 leading-relaxed mt-2 pt-2 border-t border-white/5">
+                    {p.note}
+                  </p>
+                )}
               </li>
             ))}
           </ul>
@@ -347,11 +389,19 @@ function InternModal({
             {intern.completedProjects.map((p) => (
               <li
                 key={p.title}
-                className="flex items-start justify-between gap-2 p-3 rounded-lg bg-black/35 border border-white/[0.06]"
+                className="p-3.5 rounded-lg bg-black/35 border border-white/[0.06] border-l-2 border-l-emerald-500/50"
               >
-                <span className="text-[0.78rem] font-medium text-gray-200">{p.title}</span>
-                {p.period && (
-                  <span className="font-mono text-[0.62rem] text-gray-600 shrink-0">{p.period}</span>
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-[0.78rem] font-medium text-gray-200">{p.title}</span>
+                  {p.period && (
+                    <span className="font-mono text-[0.58rem] px-1.5 py-0.5 rounded border border-emerald-500/25 bg-emerald-500/10 text-emerald-300/90 shrink-0 flex items-center gap-1">
+                      <CheckCircle2 className="w-2.5 h-2.5" />
+                      {p.period}
+                    </span>
+                  )}
+                </div>
+                {p.note && (
+                  <p className="text-[0.7rem] text-gray-500 leading-relaxed mt-1.5">{p.note}</p>
                 )}
               </li>
             ))}
@@ -359,30 +409,81 @@ function InternModal({
         </div>
       )}
 
-      {/* Ballar — terminal progress */}
+      {/* Ballar — har bir loyiha uchun ajratilgan balldan */}
       {intern.curatorGrades.length > 0 ? (
         <div className="space-y-3">
           <p className="font-mono text-[0.6rem] font-bold text-gray-500 uppercase tracking-widest">
             {labels.grades}
           </p>
-          <div className="space-y-3">
-            {intern.curatorGrades.map((g, idx) => (
-              <div key={g.category} className="space-y-1.5">
-                <div className="flex justify-between font-mono text-[0.7rem]">
-                  <span className="text-gray-300">{g.category}</span>
-                  <span className="text-purple-400 font-bold">{g.score}%</span>
+          <div className="space-y-3.5">
+            {intern.curatorGrades.map((g, idx) => {
+              const max = g.max ?? 100;
+              const pct = max > 0 ? Math.min(100, (g.score / max) * 100) : 0;
+              return (
+                <div key={g.category} className="space-y-1.5">
+                  <div className="flex justify-between items-baseline gap-3 font-mono text-[0.7rem]">
+                    <span className={`truncate ${g.pending ? 'text-gray-500' : 'text-gray-300'}`}>
+                      {g.category}
+                    </span>
+                    <span className="shrink-0 font-bold">
+                      {/* Davom etayotgan loyihada ball hali yo'q — "50/50" chalg'ituvchi bo'lardi */}
+                      <span className={g.pending ? 'text-gray-600' : 'text-emerald-400'}>
+                        {g.pending ? '—' : g.score}
+                      </span>
+                      <span className="text-gray-600">/{max} {labels.ball}</span>
+                    </span>
+                  </div>
+
+                  {/* Davom etayotgan loyihada punktir chiziq — ball hali qo'yilmagan */}
+                  <div className={`term-track ${g.pending ? '!bg-transparent border-dashed border-amber-500/35' : ''}`}>
+                    {!g.pending && (
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${pct}%` }}
+                        transition={{ duration: 0.8, delay: 0.12 + idx * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                        className="term-fill"
+                      />
+                    )}
+                  </div>
+
+                  {g.pending && (
+                    <p className="font-mono text-[0.58rem] text-amber-400/70 flex items-center gap-1.5">
+                      <Loader className="w-2.5 h-2.5" />
+                      {labels.inProgress} — {g.score} {labels.ball} {labels.pending}
+                    </p>
+                  )}
                 </div>
-                <div className="term-track">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${g.score}%` }}
-                    transition={{ duration: 0.8, delay: 0.12 + idx * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                    className="term-fill"
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+
+          {/* Ballar yakuni */}
+          {intern.overallGrade != null && (
+            <div className="grid grid-cols-3 gap-2 pt-2">
+              <div className="p-2.5 rounded-lg bg-emerald-500/[0.07] border border-emerald-500/25 text-center">
+                <p className="font-mono text-base font-black text-emerald-400">{intern.overallGrade}</p>
+                <p className="font-mono text-[0.52rem] text-gray-600 uppercase tracking-widest mt-0.5">
+                  {labels.collected}
+                </p>
+              </div>
+              <div className="p-2.5 rounded-lg bg-amber-500/[0.07] border border-amber-500/25 text-center">
+                <p className="font-mono text-base font-black text-amber-400">
+                  +{intern.expectedGrade ?? 0}
+                </p>
+                <p className="font-mono text-[0.52rem] text-gray-600 uppercase tracking-widest mt-0.5">
+                  {labels.expected}
+                </p>
+              </div>
+              <div className="p-2.5 rounded-lg bg-purple-500/[0.07] border border-purple-500/25 text-center">
+                <p className="font-mono text-base font-black text-purple-300">
+                  {intern.overallGrade + (intern.expectedGrade ?? 0)}
+                </p>
+                <p className="font-mono text-[0.52rem] text-gray-600 uppercase tracking-widest mt-0.5">
+                  {labels.total}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <p className="font-mono text-[0.68rem] text-gray-600 py-2.5 px-3 rounded-lg bg-black/30 border border-white/[0.06]">

@@ -41,13 +41,20 @@ export interface Intern {
     role?: string;
   };
   /** Hozir ishlayotgan loyihalar */
-  activeProjects: { title: string; role?: string }[];
+  activeProjects: { title: string; role?: string; note?: string }[];
   /** Tugatilgan / ishlagan loyihalar */
-  completedProjects: { title: string; period?: string }[];
-  /** Kurator qo'ygan ballar (0–100) */
-  curatorGrades: { category: string; score: number }[];
+  completedProjects: { title: string; period?: string; note?: string }[];
+  /**
+   * Kurator qo'ygan ballar.
+   * `max` — shu loyiha uchun ajratilgan maksimal ball (standart 100).
+   * `pending: true` — loyiha davom etmoqda, ball hali qo'yilmagan (kutilmoqda).
+   */
+  curatorGrades: { category: string; score: number; max?: number; pending?: boolean }[];
   curatorComment?: string;
+  /** Hozirgacha to'plangan umumiy ball */
   overallGrade?: number;
+  /** Davom etayotgan loyihalardan kutilayotgan qo'shimcha ball */
+  expectedGrade?: number;
 }
 
 export interface Project {
