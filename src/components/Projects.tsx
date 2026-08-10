@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { LayoutGrid, Calendar, Clock, Trophy, Check, X, Sparkles, MessageSquare } from 'lucide-react';
+import { Clock, Trophy, Check, Sparkles, MessageSquareCode, Layers } from 'lucide-react';
 import { projectsData } from '../data';
 import { Project } from '../types';
 import { Language, translations } from '../translations';
+import { SectionHeading, Modal } from './effects';
 
 interface ProjectsProps {
   lang: Language;
@@ -11,13 +12,18 @@ interface ProjectsProps {
 
 const isProjectPoster = (src: string) => src.startsWith('/projects/');
 
+/** Loyiha id'sidan barqaror repo nomi */
+const repoName = (id: string) => `404-team/${id}`;
+
 export default function Projects({ lang }: ProjectsProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const t = translations[lang] || translations.uz;
 
+  const key: 'uz' | 'en' | 'ru' = lang === 'uz' ? 'uz' : lang === 'ru' ? 'ru' : 'en';
+
   const categories = [
-    { id: 'all', label: lang === 'uz' ? 'Barchasi' : lang === 'en' ? 'All' : 'Все' },
+    { id: 'all', label: { uz: 'Barchasi', en: 'All', ru: 'Все' }[key] },
     { id: 'web', label: 'Web' },
     { id: 'mobile', label: 'Mobile' },
     { id: 'ai', label: 'AI' },
@@ -29,313 +35,284 @@ export default function Projects({ lang }: ProjectsProps) {
     selectedCategory === 'all'
       ? projectsData
       : selectedCategory === 'ai'
-        ? projectsData.filter((p) => p.technologies.some((t) => /AI|OpenCV|TensorFlow|ML/i.test(t)))
+        ? projectsData.filter((p) => p.technologies.some((tech) => /AI|OpenCV|TensorFlow|ML/i.test(tech)))
         : projectsData.filter((p) => p.category === selectedCategory);
 
-  // Localized terms inside
-  const termDuration = lang === 'uz' ? 'Muddati' : lang === 'en' ? 'Duration' : lang === 'ru' ? 'Срок' : 'Süre';
-  const termOutcome = lang === 'uz' ? 'Erishilgan natija' : lang === 'en' ? 'Result' : lang === 'ru' ? 'Результат' : 'Sonuç';
-  const termClose = lang === 'uz' ? 'Yopish' : lang === 'en' ? 'Close' : lang === 'ru' ? 'Закрыть' : 'Kapat';
-  const termDetailsBtn = lang === 'uz' ? "Batafsil ma'lumot va sharh" : lang === 'en' ? "Full Details & Testimonial" : lang === 'ru' ? "Подробности и отзыв" : "Detaylar ve Yorum";
-  const termTestimonial = lang === 'uz' ? "Mijozning Fikri" : lang === 'en' ? "Client Testimonial" : lang === 'ru' ? "Отзыв клиента" : "Müşteri Yorumu";
+  const term = {
+    duration: { uz: 'Muddati', en: 'Duration', ru: 'Срок' }[key],
+    outcome: { uz: 'Erishilgan natija', en: 'Result', ru: 'Результат' }[key],
+    close: { uz: 'Yopish', en: 'Close', ru: 'Закрыть' }[key],
+    details: { uz: 'Batafsil', en: 'View details', ru: 'Подробнее' }[key],
+    testimonial: { uz: 'Mijoz sharhi', en: 'Client review', ru: 'Отзыв клиента' }[key],
+    stack: { uz: 'Texnologik stack', en: 'Tech stack', ru: 'Технологический стек' }[key],
+    more: { uz: 'yana', en: 'more', ru: 'ещё' }[key],
+  };
+
+  const title =
+    lang === 'uz' ? 'BIZNING ELITE LOYIHALARIMIZ'
+    : lang === 'ru' ? 'НАШИ ЭЛИТНЫЕ ПРОЕКТЫ'
+    : t.projectsTitle.toUpperCase();
 
   return (
-    <section id="projects" className="py-24 relative overflow-hidden border-t border-white/5 text-left">
+    <section id="projects" className="py-24 relative overflow-hidden border-t border-white/5">
       <div className="absolute top-10 left-10 w-80 h-80 bg-purple-600/10 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div className="text-center md:text-left max-w-2xl space-y-4">
-            <span className="section-badge">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{t.projectsBadge}</span>
-            </span>
-            <h2 className="section-title">{t.projectsTitle}</h2>
-            <p className="text-sm text-gray-400 font-light leading-relaxed">{t.projectsSub}</p>
-          </div>
 
-          <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-8">
+          <SectionHeading
+            command="git log --oneline --all"
+            title={title}
+            subtitle={t.projectsSub}
+            icon={<Sparkles className="w-3.5 h-3.5" />}
+            align="left"
+          />
+
+          {/* Filtrlar — CLI bayroqlari uslubida */}
+          <div className="flex flex-wrap gap-2 shrink-0">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 id={`project-filter-btn-${cat.id}`}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2.5 rounded-lg text-[11px] font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  selectedCategory === cat.id
-                    ? 'bg-brand-gradient text-white border border-purple-500/40'
-                    : 'bg-black/50 text-gray-400 hover:text-white border border-white/10 hover:border-purple-500/40'
-                }`}
+                data-active={selectedCategory === cat.id}
+                className="btn-term"
               >
-                {cat.label}
+                --{cat.id}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+        {/* Loyihalar grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => (
-              <motion.div
+              <motion.article
                 key={project.id}
                 id={`project-card-${project.id}`}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4 }}
-                className="glass-card overflow-hidden rounded-2xl group flex flex-col justify-between transition-all duration-300"
+                initial={{ opacity: 0, scale: 0.96, y: 18 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.42, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                className="code-card trace-border group overflow-hidden flex flex-col"
+                style={{ ['--scan-h' as string]: '520px' }}
               >
-                
-                {/* Thumbnail */}
+                {/* Repo sarlavhasi */}
+                <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/5 bg-white/[0.015]">
+                  <span className="term-dot term-dot-r opacity-60" />
+                  <span className="term-dot term-dot-y opacity-60" />
+                  <span className="term-dot term-dot-g opacity-60" />
+                  <span className="font-mono text-[0.62rem] text-gray-600 truncate ml-1.5 flex-1">
+                    {repoName(project.id)}
+                  </span>
+                  <span className="font-mono text-[0.58rem] px-2 py-0.5 rounded border border-purple-500/25 bg-purple-500/10 text-purple-300 shrink-0">
+                    {project.categoryLabel}
+                  </span>
+                </div>
+
+                {/* Rasm */}
                 <div
                   className={`relative w-full overflow-hidden border-b border-white/5 ${
                     isProjectPoster(project.image)
-                      ? 'bg-[#0a0f1a] min-h-[280px] sm:min-h-[340px] flex items-center justify-center'
+                      ? 'bg-[#080d16] min-h-[240px] sm:min-h-[300px] flex items-center justify-center'
                       : 'aspect-video bg-black'
                   }`}
                 >
                   <img
                     src={project.image}
                     alt={project.title}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
                     className={
                       isProjectPoster(project.image)
-                        ? 'w-full h-auto max-h-[420px] object-contain group-hover:scale-[1.02] transition-transform duration-500'
-                        : 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-700'
+                        ? 'w-full h-auto max-h-[400px] object-contain group-hover:scale-[1.03] transition-transform duration-700 ease-out'
+                        : 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out'
                     }
                   />
-                  {!isProjectPoster(project.image) && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-                  )}
-                  {isProjectPoster(project.image) && (
-                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
-                  )}
-                  
-                  {/* Category Pill Over Image */}
-                  <span className="absolute top-4 left-4 text-[9px] font-mono font-bold bg-black border border-purple-500/40 text-purple-400 px-3 py-1 rounded-none uppercase tracking-widest">
-                    {project.categoryLabel}
-                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#04040c] via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-crt opacity-40 pointer-events-none" />
 
-                  {/* Stat Indicator overlay */}
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold text-black bg-brand-gradient px-3 py-1.5 rounded-none flex items-center space-x-1.5">
-                      <Trophy className="w-3.5 h-3.5" />
-                      <span>{project.stats.value}</span>
+                  {/* Metrika overlay */}
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
+                    <span className="font-mono text-[0.66rem] font-bold text-white bg-brand-gradient px-2.5 py-1 rounded-md flex items-center gap-1.5 shadow-lg">
+                      <Trophy className="w-3 h-3" />
+                      {project.stats.value}
                     </span>
-                    <span className="text-[10px] font-mono text-gray-300 bg-black/95 border border-white/10 px-2.5 py-1 rounded-none">
-                      {termDuration}: {project.duration}
+                    <span className="font-mono text-[0.6rem] text-gray-300 bg-black/85 border border-white/10 px-2 py-1 rounded-md flex items-center gap-1.5">
+                      <Clock className="w-3 h-3 text-purple-400" />
+                      {project.duration}
                     </span>
                   </div>
                 </div>
 
-                {/* Card Content body */}
-                <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                {/* Tavsif */}
+                <div className="p-5 space-y-4 flex-1 flex flex-col">
                   <div className="space-y-2">
-                    <h3 className="text-lg sm:text-xl font-display font-black italic uppercase text-white group-hover:text-purple-400 transition-colors">
+                    <h3 className="text-base sm:text-lg font-black uppercase text-white group-hover:text-purple-200 transition-colors leading-snug">
                       {project.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-400 leading-relaxed font-light line-clamp-2">
+                    <p className="text-[0.76rem] text-gray-400 leading-relaxed font-light line-clamp-2">
                       {project.description}
                     </p>
                   </div>
 
-                  {/* Technology Pills */}
-                  <div className="space-y-3 pt-4 border-t border-white/5">
+                  <div className="mt-auto space-y-3 pt-3 border-t border-white/5">
                     <div className="flex flex-wrap gap-1.5">
-                      {project.technologies.slice(0, 4).map((tech, i) => (
+                      {project.technologies.slice(0, 4).map((tech) => (
                         <span
-                          key={i}
-                          className="text-[10px] font-mono bg-black text-gray-400 border border-white/5 px-2.5 py-1 rounded-none uppercase tracking-wider"
+                          key={tech}
+                          className="font-mono text-[0.6rem] bg-black/60 text-gray-500 border border-white/[0.07] px-2 py-1 rounded group-hover:border-purple-500/25 group-hover:text-gray-400 transition-colors"
                         >
                           {tech}
                         </span>
                       ))}
                       {project.technologies.length > 4 && (
-                        <span className="text-[10px] font-mono bg-black text-purple-400 px-2 py-1 rounded-none">
-                          +{project.technologies.length - 4} {lang === 'uz' ? 'yana' : 'more'}
+                        <span className="font-mono text-[0.6rem] text-purple-400 px-2 py-1">
+                          +{project.technologies.length - 4} {term.more}
                         </span>
                       )}
                     </div>
 
-                    {/* Button trigger */}
-                    <div className="pt-2">
-                      <button
-                        id={`view-project-details-btn-${project.id}`}
-                        onClick={() => setActiveProject(project)}
-                        className="w-full py-3 rounded-none bg-black hover:bg-brand-gradient hover:text-black text-xs font-bold uppercase tracking-widest transition-colors duration-300 text-gray-300 border border-white/10 hover:border-purple-500/40 cursor-pointer"
-                      >
-                        {termDetailsBtn}
-                      </button>
-                    </div>
+                    <button
+                      id={`view-project-details-btn-${project.id}`}
+                      onClick={() => setActiveProject(project)}
+                      className="btn-term w-full justify-center !text-[0.66rem]"
+                    >
+                      cat README.md — {term.details}
+                    </button>
                   </div>
-
                 </div>
-
-              </motion.div>
+              </motion.article>
             ))}
           </AnimatePresence>
         </div>
-
-        {/* Detailed Project Modal */}
-        <AnimatePresence>
-          {activeProject && (
-            <div
-              id="project-modal-overlay"
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm overflow-y-auto"
-            >
-              <motion.div
-                id="project-modal-card"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-[#0e0e0e] w-full max-w-3xl rounded-none overflow-hidden border border-white/10 my-8 shadow-2xl relative text-left max-h-[92vh] overflow-y-auto"
-              >
-                {/* Close Button */}
-                <button
-                  id="close-project-modal-btn"
-                  onClick={() => setActiveProject(null)}
-                  className="absolute top-4 right-4 z-20 p-2.5 rounded-none bg-black border border-white/10 text-gray-400 hover:text-white hover:border-purple-500/40 hover:bg-black transition-all cursor-pointer"
-                  aria-label="Modalni yopish"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-
-                {/* Hero / poster inside Modal */}
-                {isProjectPoster(activeProject.image) ? (
-                  <div className="relative w-full bg-[#0a0f1a] border-b border-white/5">
-                    <img
-                      src={activeProject.image}
-                      alt={activeProject.title}
-                      className="w-full h-auto object-contain"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent p-6 pt-16">
-                      <span className="text-[10px] font-mono font-bold bg-brand-gradient text-black px-3 py-1 rounded-none uppercase tracking-widest">
-                        {activeProject.categoryLabel}
-                      </span>
-                      <h3 className="text-2xl sm:text-3xl font-display font-black italic uppercase text-white mt-2">
-                        {activeProject.title}
-                      </h3>
-                    </div>
-                  </div>
-                ) : (
-                <div className="relative h-64 w-full overflow-hidden bg-black border-b border-white/5">
-                  <img
-                    src={activeProject.image}
-                    alt={activeProject.title}
-                    className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <span className="text-[10px] font-mono font-bold bg-brand-gradient text-black px-3 py-1 rounded-none uppercase tracking-widest">
-                      {activeProject.categoryLabel}
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl font-display font-black italic uppercase text-white mt-2">
-                      {activeProject.title}
-                    </h3>
-                  </div>
-                </div>
-                )}
-
-                {/* Details grid */}
-                <div className="p-6 sm:p-8 space-y-6">
-                  {/* Left-Right grid details */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    
-                    {/* Left stats block */}
-                    <div className="space-y-4 md:col-span-1">
-                      <div className="p-4 rounded-none bg-black border border-white/5 space-y-3">
-                        <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block">
-                          {termOutcome}
-                        </span>
-                        <div className="text-xl font-display font-black text-purple-400 italic">
-                          {activeProject.stats.value}
-                        </div>
-                        <span className="text-xs text-gray-400 block font-light">
-                          {activeProject.stats.label}
-                        </span>
-                      </div>
-
-                      <div className="p-4 rounded-none bg-black border border-white/5 space-y-2 text-xs font-mono">
-                        <div className="flex items-center space-x-1.5 text-gray-400">
-                          <Clock className="w-4 h-4 text-purple-400 shrink-0" />
-                          <span>{t.projectsDuration}:</span>
-                        </div>
-                        <div className="text-white font-bold uppercase">{activeProject.duration}</div>
-                      </div>
-                    </div>
-
-                    {/* Right features/technologies block */}
-                    <div className="space-y-4 md:col-span-2 text-left visual-flare-line pl-6 border-l border-purple-500/40">
-                      <h4 className="text-xs font-mono text-purple-400 uppercase tracking-widest font-bold">
-                        {t.projectsFeatures}
-                      </h4>
-                      <ul className="space-y-2">
-                        {activeProject.features.map((feat, i) => (
-                          <li key={i} className="flex items-start space-x-2 text-xs text-gray-300 font-light">
-                            <Check className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
-                            <span>{feat}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                  </div>
-
-                  {/* Technologies row */}
-                  <div className="space-y-2 text-left">
-                    <h4 className="text-xs font-mono text-gray-400 uppercase tracking-widest font-bold">
-                      Texnologik Stack
-                    </h4>
-                    <div className="flex flex-wrap gap-1.5">
-                      {activeProject.technologies.map((tech, i) => (
-                        <span
-                          key={i}
-                          className="text-xs font-mono bg-black text-purple-400 border border-white/5 px-3 py-1.5 rounded-none uppercase tracking-wider"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Client testimonial feedback */}
-                  {activeProject.clientFeedback && (
-                    <div className="p-5 rounded-none bg-white/5 border border-white/5 space-y-3 text-left border-l-2 border-purple-500/40">
-                      <div className="flex items-center space-x-1.5 text-purple-400 font-bold text-xs font-mono uppercase tracking-widest">
-                        <MessageSquare className="w-4 h-4" />
-                        <span>{termTestimonial}</span>
-                      </div>
-                      <p className="text-xs sm:text-sm text-gray-300 italic font-light leading-relaxed">
-                        "{activeProject.clientFeedback.text}"
-                      </p>
-                      <div className="flex items-center justify-between text-[11px] font-mono pt-2 border-t border-white/5">
-                        <span className="text-purple-400 font-bold">{activeProject.clientFeedback.author}</span>
-                        <span className="text-gray-500 uppercase">{activeProject.clientFeedback.position}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Submit CTA */}
-                  <div className="pt-4 border-t border-white/5 flex items-center justify-end">
-                    <button
-                      id="close-project-modal-bottom-btn"
-                      onClick={() => setActiveProject(null)}
-                      className="px-6 py-3 rounded-none bg-brand-gradient hover:bg-white text-black text-xs font-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer"
-                    >
-                      {termClose}
-                    </button>
-                  </div>
-
-                </div>
-
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
-
       </div>
+
+      {/* Loyiha modali */}
+      <AnimatePresence>
+        {activeProject && (
+          <Modal
+            open
+            onClose={() => setActiveProject(null)}
+            title={`${repoName(activeProject.id)} — README.md`}
+            closeLabel={term.close}
+            footerLabel={term.close}
+            maxWidth="max-w-3xl"
+            id="project-modal-card"
+          >
+            {/* Poster */}
+            <div className="relative -mx-5 sm:-mx-7 -mt-5 sm:-mt-7 mb-2 overflow-hidden border-b border-white/5 bg-[#080d16]">
+              <img
+                src={activeProject.image}
+                alt={activeProject.title}
+                className={
+                  isProjectPoster(activeProject.image)
+                    ? 'w-full h-auto max-h-[42vh] object-contain mx-auto'
+                    : 'w-full h-56 object-cover'
+                }
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b1a] via-[#0b0b1a]/25 to-transparent" />
+              <div className="absolute inset-0 bg-crt opacity-40" />
+              <div className="absolute bottom-4 left-5 right-5">
+                <span className="font-mono text-[0.6rem] font-bold bg-brand-gradient text-white px-2.5 py-1 rounded-md uppercase tracking-widest">
+                  {activeProject.categoryLabel}
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black uppercase text-white mt-2 leading-tight">
+                  {activeProject.title}
+                </h3>
+              </div>
+            </div>
+
+            <p className="text-[0.82rem] text-gray-300 font-light leading-relaxed">
+              {activeProject.description}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {/* Metrikalar */}
+              <div className="space-y-3 md:col-span-1">
+                <div className="p-4 rounded-xl bg-black/50 border border-white/[0.07] space-y-1.5">
+                  <p className="font-mono text-[0.58rem] text-gray-600 uppercase tracking-widest">
+                    {term.outcome}
+                  </p>
+                  <p className="text-xl font-black text-purple-400 font-mono">
+                    {activeProject.stats.value}
+                  </p>
+                  <p className="text-[0.7rem] text-gray-500 font-light">{activeProject.stats.label}</p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-black/50 border border-white/[0.07] space-y-1.5">
+                  <p className="font-mono text-[0.58rem] text-gray-600 uppercase tracking-widest flex items-center gap-1.5">
+                    <Clock className="w-3 h-3 text-purple-400" />
+                    {term.duration}
+                  </p>
+                  <p className="font-mono text-sm font-bold text-white uppercase">
+                    {activeProject.duration}
+                  </p>
+                </div>
+              </div>
+
+              {/* Xususiyatlar — commit ro'yxati */}
+              <div className="md:col-span-2 space-y-3 pl-0 md:pl-5 md:border-l border-purple-500/25">
+                <p className="font-mono text-[0.6rem] text-purple-400 uppercase tracking-widest font-bold">
+                  {t.projectsFeatures}
+                </p>
+                <ul className="space-y-2">
+                  {activeProject.features.map((feat, i) => (
+                    <motion.li
+                      key={feat}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + i * 0.06 }}
+                      className="flex items-start gap-2 text-[0.76rem] text-gray-300 font-light"
+                    >
+                      <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{feat}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Stack */}
+            <div className="space-y-2">
+              <p className="font-mono text-[0.6rem] text-gray-500 uppercase tracking-widest font-bold flex items-center gap-1.5">
+                <Layers className="w-3 h-3" />
+                {term.stack}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {activeProject.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="font-mono text-[0.68rem] bg-black/60 text-purple-400 border border-purple-500/20 px-2.5 py-1 rounded"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Mijoz sharhi */}
+            {activeProject.clientFeedback && (
+              <div className="p-4 rounded-xl bg-purple-500/[0.05] border border-purple-500/20 border-l-2 border-l-purple-500 space-y-3">
+                <p className="font-mono text-[0.6rem] text-purple-400 uppercase tracking-widest font-bold flex items-center gap-1.5">
+                  <MessageSquareCode className="w-3.5 h-3.5" />
+                  {term.testimonial}
+                </p>
+                <p className="text-[0.78rem] text-gray-300 italic font-light leading-relaxed">
+                  {activeProject.clientFeedback.text}
+                </p>
+                <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[0.62rem] pt-2 border-t border-white/5">
+                  <span className="text-purple-400 font-bold">{activeProject.clientFeedback.author}</span>
+                  <span className="text-gray-600">{activeProject.clientFeedback.position}</span>
+                </div>
+              </div>
+            )}
+          </Modal>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

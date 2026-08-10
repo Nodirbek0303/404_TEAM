@@ -256,6 +256,13 @@ export const teamGroups: TeamGroup[] = [
  *   overallGrade: 88,
  * },
  */
+/** Kiberxavfsizlik yo'nalishi amaliyotchilarining umumiy kuratori */
+const CYBERSECURITY_CURATOR = {
+  name: 'Anarboyev Dilshod',
+  avatar: '/team/dilshod-card.png',
+  role: 'Kiberxavfsizlik bo\'limi Boshlig\'i',
+};
+
 export const internsData: Intern[] = [
   {
     id: 'zafarjon',
@@ -264,11 +271,7 @@ export const internsData: Intern[] = [
     avatar: '/interns/zafarjon-card.png',
     bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida yangi amaliyotchi. Hozircha loyihalarda ishtirok etmaydi — ballar va loyihalar amaliyot jarayonida qo\'shiladi.',
     startedAt: '2026-yil yanvar',
-    curator: {
-      name: 'Anarboyev Dilshod',
-      avatar: '/team/dilshod-card.png',
-      role: 'Kiberxavfsizlik bo\'limi Boshlig\'i',
-    },
+    curator: CYBERSECURITY_CURATOR,
     activeProjects: [],
     completedProjects: [],
     curatorGrades: [],
@@ -282,11 +285,21 @@ export const internsData: Intern[] = [
     avatar: '/interns/jasurbek-card.png',
     bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida yangi amaliyotchi. Hozircha loyihalarda ishtirok etmaydi — ballar va loyihalar amaliyot jarayonida qo\'shiladi.',
     startedAt: '2026-yil yanvar',
-    curator: {
-      name: 'Anarboyev Dilshod',
-      avatar: '/team/dilshod-card.png',
-      role: 'Kiberxavfsizlik bo\'limi Boshlig\'i',
-    },
+    curator: CYBERSECURITY_CURATOR,
+    activeProjects: [],
+    completedProjects: [],
+    curatorGrades: [],
+    curatorComment: 'Yangi amaliyotchi. Loyihalarda ishlagach kurator tomonidan ballar va izohlar yangilanadi.',
+    overallGrade: 0,
+  },
+  {
+    id: 'ezoza',
+    name: "Maxamadjonova E'zoza",
+    direction: 'Kiberxavfsizlik',
+    avatar: '/interns/ezoza-card.jpg',
+    bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida yangi amaliyotchi. Hozircha loyihalarda ishtirok etmaydi — ballar va loyihalar amaliyot jarayonida qo\'shiladi.',
+    startedAt: '2026-yil avgust',
+    curator: CYBERSECURITY_CURATOR,
     activeProjects: [],
     completedProjects: [],
     curatorGrades: [],

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://404-team-ster.vercel.app/sitemap.xml
