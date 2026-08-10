@@ -64,6 +64,8 @@ export interface Project {
   };
   features: string[];
   duration: string;
+  /** Jonli loyihaning manzili — mavjud bo'lsa kartada va modalda havola chiqadi */
+  link?: string;
   clientFeedback?: {
     text: string;
     author: string;

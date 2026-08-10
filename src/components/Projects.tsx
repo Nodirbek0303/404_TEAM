@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Clock, Trophy, Check, Sparkles, MessageSquareCode, Layers } from 'lucide-react';
+import { Clock, Trophy, Check, Sparkles, MessageSquareCode, Layers, ExternalLink, Globe } from 'lucide-react';
 import { projectsData } from '../data';
 import { Project } from '../types';
 import { Language, translations } from '../translations';
@@ -46,6 +46,8 @@ export default function Projects({ lang }: ProjectsProps) {
     testimonial: { uz: 'Mijoz sharhi', en: 'Client review', ru: 'Отзыв клиента' }[key],
     stack: { uz: 'Texnologik stack', en: 'Tech stack', ru: 'Технологический стек' }[key],
     more: { uz: 'yana', en: 'more', ru: 'ещё' }[key],
+    live: { uz: 'Jonli', en: 'Live', ru: 'Онлайн' }[key],
+    visit: { uz: 'Saytga o\'tish', en: 'Open the site', ru: 'Перейти на сайт' }[key],
   };
 
   const title =
@@ -107,6 +109,12 @@ export default function Projects({ lang }: ProjectsProps) {
                   <span className="font-mono text-[0.62rem] text-gray-600 truncate ml-1.5 flex-1">
                     {repoName(project.id)}
                   </span>
+                  {project.link && (
+                    <span className="font-mono text-[0.55rem] px-1.5 py-0.5 rounded border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shrink-0 flex items-center gap-1">
+                      <span className="w-1 h-1 rounded-full bg-emerald-400" />
+                      {term.live}
+                    </span>
+                  )}
                   <span className="font-mono text-[0.58rem] px-2 py-0.5 rounded border border-purple-500/25 bg-purple-500/10 text-purple-300 shrink-0">
                     {project.categoryLabel}
                   </span>
@@ -175,13 +183,28 @@ export default function Projects({ lang }: ProjectsProps) {
                       )}
                     </div>
 
-                    <button
-                      id={`view-project-details-btn-${project.id}`}
-                      onClick={() => setActiveProject(project)}
-                      className="btn-term w-full justify-center !text-[0.66rem]"
-                    >
-                      cat README.md — {term.details}
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        id={`view-project-details-btn-${project.id}`}
+                        onClick={() => setActiveProject(project)}
+                        className="btn-term flex-1 justify-center !text-[0.66rem]"
+                      >
+                        cat README.md
+                      </button>
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          title={project.link}
+                          className="btn-term shrink-0 !text-[0.66rem] flex items-center gap-1.5 hover:!border-emerald-500/50 hover:!text-emerald-300"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          {term.visit}
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               </motion.article>
@@ -229,6 +252,29 @@ export default function Projects({ lang }: ProjectsProps) {
             <p className="text-[0.82rem] text-gray-300 font-light leading-relaxed">
               {activeProject.description}
             </p>
+
+            {/* Jonli loyiha havolasi */}
+            {activeProject.link && (
+              <a
+                href={activeProject.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 p-3.5 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] hover:border-emerald-400/60 hover:bg-emerald-500/[0.1] transition-colors"
+              >
+                <span className="w-9 h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center shrink-0">
+                  <Globe className="w-4 h-4 text-emerald-400" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-mono text-[0.58rem] text-emerald-400/80 uppercase tracking-widest">
+                    {term.live}
+                  </span>
+                  <span className="block font-mono text-[0.76rem] text-gray-200 truncate group-hover:text-white transition-colors">
+                    {activeProject.link.replace(/^https?:\/\//, '')}
+                  </span>
+                </span>
+                <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-emerald-300 shrink-0 transition-colors" />
+              </a>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* Metrikalar */}

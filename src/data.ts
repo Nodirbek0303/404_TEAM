@@ -310,6 +310,29 @@ export const internsData: Intern[] = [
 
 export const projectsData: Project[] = [
   {
+    id: 'repetitor',
+    title: 'REPETITOR — Onlayn Ta\'lim Platformasi',
+    category: 'web',
+    categoryLabel: 'Ta\'lim Platformasi',
+    description: '404-TEAM tomonidan yaratilgan onlayn ta\'lim platformasi. Abituriyentlar va o\'quvchilar barcha fanlardan mukammal tayyorgarlik ko\'rishi, DTM test formatida real sinovlar ishlashi va o\'z ko\'nikmalarini bosqichma-bosqich oshirishi mumkin.',
+    image: '/projects/repetitor.jpg',
+    technologies: ['React', 'Vite', 'KaTeX', 'REST API', 'Nginx', 'Ubuntu'],
+    stats: {
+      label: 'Fanlar qamrovi',
+      value: 'Barcha fanlar'
+    },
+    features: [
+      'Barcha fanlardan mukammal tayyorgarlik materiallari',
+      'DTM test formatida real sinov va natija tahlili',
+      'Matematik va kimyoviy formulalar KaTeX orqali aniq ko\'rsatiladi',
+      'Telefon raqami va parol orqali xavfsiz kirish',
+      'Ro\'yxatdan o\'tish va shaxsiy o\'quv kabineti',
+      'Ko\'nikmalarni bosqichma-bosqich oshirish tizimi'
+    ],
+    duration: 'Doimiy rivojlanmoqda',
+    link: 'https://visiontest.asosit.uz',
+  },
+  {
     id: 'cyberaqua',
     title: 'CYBERAQUA — AI Sug\'orish Tizimi',
     category: 'system',
