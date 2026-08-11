@@ -422,6 +422,30 @@ export const projectsData: Project[] = [
     link: 'https://visiontest.asosit.uz',
   },
   {
+    id: 'crm-erp',
+    title: '404 CRM / ERP — Biznesni Avtomatlashtirish',
+    category: 'system',
+    categoryLabel: 'CRM / ERP Tizimi',
+    description: 'Kichik va o\'rta biznes uchun yagona boshqaruv tizimi. Sotuv, mijozlar, xodimlar, ombor va moliya — barchasi bitta platformada birlashtiriladi. Excel jadvallari va tarqoq daftarlar o\'rniga real vaqtda ishlaydigan, har bir bo\'lim uchun alohida huquqli va avtomatik hisobot beradigan tizim ishlab chiqilmoqda.',
+    image: '/projects/crm-erp.jpg',
+    technologies: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Redis', 'Docker', 'REST API'],
+    stats: {
+      label: 'Boshqaruv modullari',
+      value: '6 modul'
+    },
+    features: [
+      'Sotuv (CRM): mijozlar kartotekasi, bitimlar va sotuv voronkasi bosqichlari',
+      'Xodimlar (HR): davomat, KPI hisobi, vazifalar va ish haqi jadvali',
+      'Ombor: mahsulot qoldig\'i, kirim-chiqim va inventarizatsiya nazorati',
+      'Moliya: hisob-fakturalar, to\'lovlar, xarajatlar va foyda tahlili',
+      'Hisobotlar: real vaqt dashboard hamda PDF va Excel formatida eksport',
+      'Integratsiyalar: Telegram bot, SMS xabarnoma, IP-telefoniya va to\'lov tizimlari',
+      'Xavfsizlik: rollar va huquqlar tizimi, har bir amal uchun audit jurnali',
+      'Bulutli yoki kompaniya serverida ishlash imkoniyati'
+    ],
+    duration: 'Ishlab chiqilmoqda',
+  },
+  {
     id: 'cyberaqua',
     title: 'CYBERAQUA — AI Sug\'orish Tizimi',
     category: 'system',
