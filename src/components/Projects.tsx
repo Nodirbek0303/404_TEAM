@@ -40,7 +40,8 @@ export default function Projects({ lang }: ProjectsProps) {
 
   const term = {
     duration: { uz: 'Muddati', en: 'Duration', ru: 'Срок' }[key],
-    outcome: { uz: 'Erishilgan natija', en: 'Result', ru: 'Результат' }[key],
+    // Neytral nom: yakunlangan loyihada ham, ishlab chiqilayotganida ham to'g'ri
+    outcome: { uz: 'Asosiy ko\'rsatkich', en: 'Key metric', ru: 'Ключевой показатель' }[key],
     close: { uz: 'Yopish', en: 'Close', ru: 'Закрыть' }[key],
     details: { uz: 'Batafsil', en: 'View details', ru: 'Подробнее' }[key],
     testimonial: { uz: 'Mijoz sharhi', en: 'Client review', ru: 'Отзыв клиента' }[key],

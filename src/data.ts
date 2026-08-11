@@ -269,14 +269,14 @@ export const internsData: Intern[] = [
     name: 'Zoidov Zafarjon',
     direction: 'Kiberxavfsizlik',
     avatar: '/interns/zafarjon-card.png',
-    bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida amaliyotchi. Yakunlangan ikkita loyihada mukammal ishtirok etdi, hozirda kompaniyaning shaxsiy sun\'iy intellekti KICHKITOY ustida ishlamoqda.',
+    bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida amaliyotchi. Yakunlangan ikkita loyihada mukammal ishtirok etdi, hozirda kompaniyaning shaxsiy sun\'iy ongi KICHKITOY ustida kiberxavfsizlik yo\'nalishi bo\'yicha ishlamoqda.',
     startedAt: '2026-yil yanvar',
     curator: CYBERSECURITY_CURATOR,
     activeProjects: [
       {
         title: 'KICHKITOY — 404-TEAM shaxsiy sun\'iy intellekti',
         role: 'Kiberxavfsizlik yo\'nalishi bo\'yicha ishtirok',
-        note: 'Kompaniyaning o\'z sun\'iy intellekti ustida mukammal tarzda ish olib borilmoqda. Loyiha davom etmoqda — yakunda kurator tomonidan ball qo\'yiladi.',
+        note: 'KICHKITOY — dunyodagi yetakchi sun\'iy intellektlar bilan raqobatlasha oladigan sun\'iy ong: ovoz orqali kompyuter, Android va Apple qurilmalarini boshqaradi, mukammal dasturlar yozadi hamda o\'qituvchi, do\'st va dasturchi rolida ish ko\'radi. Amaliyotchi loyihada kiberxavfsizlik yo\'nalishi bo\'yicha mukammal tarzda ishlamoqda — yakunda 50 ball kutilmoqda.',
       },
     ],
     completedProjects: [
@@ -305,14 +305,14 @@ export const internsData: Intern[] = [
     name: "Jo'lanboyev Jasurbek",
     direction: 'Kiberxavfsizlik',
     avatar: '/interns/jasurbek-card.png',
-    bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida amaliyotchi. Yakunlangan ikkita loyihada mukammal ishtirok etdi, hozirda kompaniyaning shaxsiy sun\'iy intellekti KICHKITOY ustida ishlamoqda.',
+    bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida amaliyotchi. Yakunlangan ikkita loyihada mukammal ishtirok etdi, hozirda kompaniyaning shaxsiy sun\'iy ongi KICHKITOY ustida kiberxavfsizlik yo\'nalishi bo\'yicha ishlamoqda.',
     startedAt: '2026-yil yanvar',
     curator: CYBERSECURITY_CURATOR,
     activeProjects: [
       {
         title: 'KICHKITOY — 404-TEAM shaxsiy sun\'iy intellekti',
         role: 'Kiberxavfsizlik yo\'nalishi bo\'yicha ishtirok',
-        note: 'Kompaniyaning o\'z sun\'iy intellekti ustida mukammal tarzda ish olib borilmoqda. Loyiha davom etmoqda — yakunda kurator tomonidan ball qo\'yiladi.',
+        note: 'KICHKITOY — dunyodagi yetakchi sun\'iy intellektlar bilan raqobatlasha oladigan sun\'iy ong: ovoz orqali kompyuter, Android va Apple qurilmalarini boshqaradi, mukammal dasturlar yozadi hamda o\'qituvchi, do\'st va dasturchi rolida ish ko\'radi. Amaliyotchi loyihada kiberxavfsizlik yo\'nalishi bo\'yicha mukammal tarzda ishlamoqda — yakunda 50 ball kutilmoqda.',
       },
     ],
     completedProjects: [
@@ -341,14 +341,14 @@ export const internsData: Intern[] = [
     name: "Maxamadjonova E'zoza",
     direction: 'Kiberxavfsizlik',
     avatar: '/interns/ezoza-card.jpg',
-    bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida amaliyotchi. Yakunlangan ikkita loyihada mukammal ishtirok etdi, hozirda kompaniyaning shaxsiy sun\'iy intellekti KICHKITOY ustida ishlamoqda.',
+    bio: '404-TEAM kampaniyasida kiberxavfsizlik yo\'nalishida amaliyotchi. Yakunlangan ikkita loyihada mukammal ishtirok etdi, hozirda kompaniyaning shaxsiy sun\'iy ongi KICHKITOY ustida kiberxavfsizlik yo\'nalishi bo\'yicha ishlamoqda.',
     startedAt: '2026-yil avgust',
     curator: CYBERSECURITY_CURATOR,
     activeProjects: [
       {
         title: 'KICHKITOY — 404-TEAM shaxsiy sun\'iy intellekti',
         role: 'Kiberxavfsizlik yo\'nalishi bo\'yicha ishtirok',
-        note: 'Kompaniyaning o\'z sun\'iy intellekti ustida mukammal tarzda ish olib borilmoqda. Loyiha davom etmoqda — yakunda kurator tomonidan ball qo\'yiladi.',
+        note: 'KICHKITOY — dunyodagi yetakchi sun\'iy intellektlar bilan raqobatlasha oladigan sun\'iy ong: ovoz orqali kompyuter, Android va Apple qurilmalarini boshqaradi, mukammal dasturlar yozadi hamda o\'qituvchi, do\'st va dasturchi rolida ish ko\'radi. Amaliyotchi loyihada kiberxavfsizlik yo\'nalishi bo\'yicha mukammal tarzda ishlamoqda — yakunda 50 ball kutilmoqda.',
       },
     ],
     completedProjects: [
@@ -375,6 +375,29 @@ export const internsData: Intern[] = [
 ];
 
 export const projectsData: Project[] = [
+  {
+    id: 'kichkitoy',
+    title: 'KICHKITOY — 404-TEAM Sun\'iy Ongi',
+    category: 'system',
+    categoryLabel: 'Sun\'iy Intellekt',
+    description: 'KICHKITOY — 404-TEAM kompaniyasining shaxsiy sun\'iy ongi. U dunyodagi yetakchi sun\'iy intellekt tizimlari bilan raqobatlasha oladigan darajada ishlab chiqilmoqda: ovozli buyruq orqali kompyuter, Android va Apple qurilmalarini erkin boshqaradi, mukammal dasturlar yozadi va foydalanuvchi nimani xohlasa — o\'shanga qarab mustaqil ish ko\'radi. Bir vaqtning o\'zida o\'qituvchi, do\'st va dasturchi bo\'la oladi.',
+    image: '/projects/kichkitoy.jpg',
+    technologies: ['LLM', 'Speech Recognition', 'Text-to-Speech', 'NLP', 'Code Generation', 'Device Control', 'Cross-Platform'],
+    stats: {
+      label: 'Qurilmalar qamrovi',
+      value: 'PC · Android · iOS'
+    },
+    features: [
+      'Ovozli boshqaruv — kompyuter, Android va Apple qurilmalarini erkin boshqaradi',
+      'Dasturchi: mukammal dasturlar yozadi, kodni tahlil qiladi va xatolarni tuzatadi',
+      'O\'qituvchi: istalgan mavzuni tushuntiradi va bosqichma-bosqich o\'rgatadi',
+      'Do\'st: tabiiy suhbat quradi va kundalik ishlarda hamroh bo\'ladi',
+      'Niyatni tushunish — foydalanuvchi nimani xohlasa, o\'shanga qarab mustaqil qaror qabul qiladi',
+      'Qurilmalararo yagona ong — bitta sun\'iy intellekt, barcha platformalarda',
+      'Doimiy o\'rganish va foydalanuvchi odatlariga moslashuv'
+    ],
+    duration: 'Ishlab chiqilmoqda',
+  },
   {
     id: 'repetitor',
     title: 'REPETITOR — Onlayn Ta\'lim Platformasi',
